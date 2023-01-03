@@ -1,0 +1,74 @@
+package com.springproject.order_service.service;
+
+import com.springproject.order_service.dto.InventoryResponse;
+import com.springproject.order_service.dto.OrderLineItemDto;
+import com.springproject.order_service.dto.OrderRequest;
+import com.springproject.order_service.model.Order;
+import com.springproject.order_service.model.OrderLineItem;
+import com.springproject.order_service.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class OrderService {
+
+    private final OrderRepository orderRepository;
+//    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
+
+    public void placeOrder(OrderRequest orderRequest){
+        Order order = new Order();
+        order.setOrderNumber(UUID.randomUUID().toString());
+
+        List<OrderLineItem> orderLineItems = orderRequest
+                                                    .getOrderLineItemDtoList()
+                                                    .stream()
+                                                    .map(this::mapToDto)
+                                                    .toList();
+        order.setOrderLineItemList(orderLineItems);
+
+        List<String> sku_codes = order.getOrderLineItemList()
+                                        .stream()
+                                        .map(OrderLineItem :: getSku_code)
+                                        .toList();
+
+
+        //Call inventory-service, and place order if product is in stock
+//        Boolean result =
+        InventoryResponse[] inventoryResponses =
+//                webClient.get()
+                webClientBuilder.build()
+                        .get()
+                                    .uri("http://inventory-service/api/inventory",
+                                            uriBuilder ->
+                                                    uriBuilder.queryParam("sku_code",sku_codes)
+                                                                .build())
+                                    .retrieve()
+//                                    .bodyToMono(Boolean.class)
+                                    .bodyToMono(InventoryResponse[].class)
+                                    .block();
+//        if (result)
+        boolean allProductsInStock = Arrays.stream(inventoryResponses).allMatch(InventoryResponse::isInStock);
+        if (allProductsInStock)
+            orderRepository.save(order);
+        else {
+            throw new IllegalArgumentException("Product is not in stock, please try again later");
+        }
+    }
+
+    private OrderLineItem mapToDto(OrderLineItemDto orderLineItemDto) {
+        OrderLineItem orderLineItem = new OrderLineItem();
+        orderLineItem.setPrice(orderLineItemDto.getPrice());
+        orderLineItem.setQuantity(orderLineItemDto.getQuantity());
+        orderLineItem.setSku_code(orderLineItemDto.getSku_code());
+        return orderLineItem;
+    }
+}

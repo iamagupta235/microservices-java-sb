@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/discovery-server/Microservices.discovery-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/discovery-server/Microservices.discovery-server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/inventory_service/Microservices.inventory_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/inventory_service/Microservices.inventory_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order_service/Microservices.order_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order_service/Microservices.order_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/product_service/Microservices.product_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product_service/Microservices.product_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/product_service/com.spring_project.Microservices.product_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/product_service/com.spring_project.Microservices.product_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/discovery-server/com.springproject.Microservices.discovery-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/discovery-server/com.springproject.Microservices.discovery-server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/inventory_service/com.springproject.Microservices.inventory_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/inventory_service/com.springproject.Microservices.inventory_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/order_service/com.springproject.Microservices.order_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order_service/com.springproject.Microservices.order_service.main.iml" />
+    </modules>
+  </component>
+</project>
